@@ -101,15 +101,16 @@ def ingest_diff(pr_number: int, diff_text: str):
     print(f"✅ Successfully ingested {len(chunks)} chunks for PR #{pr_number} using local embeddings")
 
 def get_pr_chunks(pr_number: int, top_k: int = 5) -> list:
-    """Retrieve stored chunks for a PR using ChromaDB semantic search"""
+    """Retrieve stored chunks for a PR using ChromaDB"""
     try:
-        results = collection.query(
+        # Use get() to retrieve all documents for a specific PR
+        results = collection.get(
             where={"pr": pr_number},
-            n_results=top_k
+            limit=top_k
         )
         
         if results and results.get("documents"):
-            return results["documents"][0] if results["documents"] else []
+            return results["documents"]
         return []
         
     except Exception as e:
