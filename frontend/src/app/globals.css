@@ -1,26 +1,53 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-gray-950 text-gray-100;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  
+  .backdrop-blur-glass {
+    backdrop-filter: blur(12px) saturate(180%);
+  }
+
+  /* Custom zinc colors for better compatibility */
+  .bg-zinc-950 { background-color: #09090b; }
+  .bg-zinc-900 { background-color: #18181b; }
+  .bg-zinc-800 { background-color: #27272a; }
+  .bg-zinc-700 { background-color: #3f3f46; }
+  .bg-zinc-600 { background-color: #52525b; }
+  .bg-zinc-500 { background-color: #71717a; }
+  .bg-zinc-400 { background-color: #a1a1aa; }
+  .bg-zinc-300 { background-color: #d4d4d8; }
+  .bg-zinc-200 { background-color: #e4e4e7; }
+  .bg-zinc-100 { background-color: #f4f4f5; }
+  
+  .text-zinc-950 { color: #09090b; }
+  .text-zinc-900 { color: #18181b; }
+  .text-zinc-800 { color: #27272a; }
+  .text-zinc-700 { color: #3f3f46; }
+  .text-zinc-600 { color: #52525b; }
+  .text-zinc-500 { color: #71717a; }
+  .text-zinc-400 { color: #a1a1aa; }
+  .text-zinc-300 { color: #d4d4d8; }
+  .text-zinc-200 { color: #e4e4e7; }
+  .text-zinc-100 { color: #f4f4f5; }
+
+  .border-zinc-950 { border-color: #09090b; }
+  .border-zinc-900 { border-color: #18181b; }
+  .border-zinc-800 { border-color: #27272a; }
+  .border-zinc-700 { border-color: #3f3f46; }
+  .border-zinc-600 { border-color: #52525b; }
+  .border-zinc-500 { border-color: #71717a; }
+  .border-zinc-400 { border-color: #a1a1aa; }
+  .border-zinc-300 { border-color: #d4d4d8; }
+  .border-zinc-200 { border-color: #e4e4e7; }
+  .border-zinc-100 { border-color: #f4f4f5; }
 }
