@@ -1,10 +1,10 @@
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
-import ReviewsList from '../components/ReviewsList';
+import ReviewList from '../components/ReviewList';
 
 export default function ReviewsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100">
       {/* Header */}
       <Header />
       
@@ -14,8 +14,8 @@ export default function ReviewsPage() {
         <Sidebar />
         
         {/* Reviews Content */}
-        <main className="flex-1 ml-64">
-          <ReviewsList />
+        <main className="flex-1 ml-64 p-8">
+          <ReviewList />
         </main>
       </div>
     </div>

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..db import crud, schemas, models
 from ..db.database import get_db
 from typing import Optional
-from ..services.review import make_summary  # reuse your existing function
+# from ..services.review import make_summary  # reuse your existing function
 
 router = APIRouter(prefix="/api/reviews", tags=["reviews"])
 
@@ -24,7 +24,8 @@ def create_review(review_in: schemas.ReviewCreate, db: Session = Depends(get_db)
         # we call make_summary in background; it returns text (sync) so ensure it runs in threadpool if heavy
         def _generate_and_attach(pr_id: int, db_id: int):
             try:
-                text = make_summary(pr_id)
+                # text = make_summary(pr_id)  # Temporarily disabled
+                text = f"Auto-generated summary for PR #{pr_id}"  # Placeholder
                 # Update DB with summary
                 from ..db.database import SessionLocal
                 db2 = SessionLocal()
@@ -44,7 +45,7 @@ def create_review(review_in: schemas.ReviewCreate, db: Session = Depends(get_db)
 
     return review
 
-@router.get("/", response_model=dict)
+@router.get("/", response_model=schemas.ReviewListResponse)
 def list_reviews(repo_id: Optional[int] = None, status: Optional[str] = None, skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     return crud.list_reviews(db, repo_id=repo_id, status=status, skip=skip, limit=limit)
 

@@ -1,6 +1,6 @@
 # app/db/schemas.py
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from enum import Enum
 
@@ -48,3 +48,8 @@ class ReviewOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+# Paginated response for reviews
+class ReviewListResponse(BaseModel):
+    total: int
+    items: List[ReviewOut]
