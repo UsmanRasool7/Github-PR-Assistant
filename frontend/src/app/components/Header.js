@@ -1,9 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import LoginButton from '../../components/auth/LoginButton';
+import UserProfile from '../../components/auth/UserProfile';
 
 export default function Header() {
   const [notifications] = useState(3);
+  const { isAuthenticated, isLoading } = useAuth();
 
   return (
     <header className="bg-zinc-900/80 backdrop-blur-xl border-b border-zinc-800/50 shadow-2xl sticky top-0 z-50">
@@ -26,63 +30,69 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end">
-            <div className="max-w-lg w-full lg:max-w-xs">
-              <label htmlFor="search" className="sr-only">Search</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+          {/* Search Bar - only show when authenticated */}
+          {isAuthenticated && (
+            <div className="flex-1 flex justify-center px-2 lg:ml-6 lg:justify-end">
+              <div className="max-w-lg w-full lg:max-w-xs">
+                <label htmlFor="search" className="sr-only">Search</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input
+                    id="search"
+                    name="search"
+                    className="block w-full pl-10 pr-3 py-2 border border-zinc-700/50 rounded-lg leading-5 bg-zinc-800/50 backdrop-blur-sm placeholder-zinc-400 focus:outline-none focus:placeholder-zinc-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 sm:text-sm transition-all duration-200"
+                    placeholder="Search PRs, repos, or reviews..."
+                    type="search"
+                  />
                 </div>
-                <input
-                  id="search"
-                  name="search"
-                  className="block w-full pl-10 pr-3 py-2 border border-zinc-700/50 rounded-lg leading-5 bg-zinc-800/50 backdrop-blur-sm placeholder-zinc-400 focus:outline-none focus:placeholder-zinc-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 sm:text-sm transition-all duration-200"
-                  placeholder="Search PRs, repos, or reviews..."
-                  type="search"
-                />
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Right side - Notifications and Profile */}
+          {/* Right side - Authentication and User Info */}
           <div className="flex items-center space-x-4">
-            {/* Notifications */}
-            <button className="relative p-2 text-zinc-400 hover:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 rounded-lg transition-all duration-200 hover:bg-zinc-800/50">
-              <span className="sr-only">View notifications</span>
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5-5V9a3 3 0 00-6 0v3l-5 5h5a3 3 0 106 0z" />
-              </svg>
-              {notifications > 0 && (
-                <span className="absolute -top-1 -right-1 block h-5 w-5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
-                  <span className="relative inline-flex rounded-full h-5 w-5 bg-red-500 text-xs text-white items-center justify-center font-bold">
-                    {notifications}
-                  </span>
-                </span>
-              )}
-            </button>
-
-            {/* Profile Dropdown */}
-            <div className="relative">
-              <button className="bg-zinc-800/50 backdrop-blur-sm rounded-lg flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-indigo-500 p-1 transition-all duration-200 hover:bg-zinc-700/50">
-                <span className="sr-only">Open user menu</span>
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center shadow-lg">
-                  <span className="text-sm font-bold text-white">U</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Status Indicator */}
-            <div className="flex items-center space-x-2">
-              <div className="relative">
-                <div className="h-2 w-2 bg-emerald-500 rounded-full"></div>
-                <div className="absolute inset-0 h-2 w-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin h-4 w-4 border-2 border-zinc-400 border-t-transparent rounded-full"></div>
+                <span className="text-sm text-zinc-400">Loading...</span>
               </div>
-              <span className="text-sm text-zinc-400 hidden sm:block">Online</span>
-            </div>
+            ) : isAuthenticated ? (
+              <>
+                {/* Notifications */}
+                <button className="relative p-2 text-zinc-400 hover:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 rounded-lg transition-all duration-200 hover:bg-zinc-800/50">
+                  <span className="sr-only">View notifications</span>
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-5-5V9a3 3 0 00-6 0v3l-5 5h5a3 3 0 106 0z" />
+                  </svg>
+                  {notifications > 0 && (
+                    <span className="absolute -top-1 -right-1 block h-5 w-5">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
+                      <span className="relative inline-flex rounded-full h-5 w-5 bg-red-500 text-xs text-white items-center justify-center font-bold">
+                        {notifications}
+                      </span>
+                    </span>
+                  )}
+                </button>
+
+                {/* User Profile */}
+                <UserProfile />
+
+                {/* Status Indicator */}
+                <div className="flex items-center space-x-2">
+                  <div className="relative">
+                    <div className="h-2 w-2 bg-emerald-500 rounded-full"></div>
+                    <div className="absolute inset-0 h-2 w-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
+                  </div>
+                  <span className="text-sm text-zinc-400 hidden sm:block">Online</span>
+                </div>
+              </>
+            ) : (
+              <LoginButton />
+            )}
           </div>
         </div>
       </div>
